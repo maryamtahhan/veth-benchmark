@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) 2022 Red Hat, Inc.
+
+FROM fedora:37
+
+# Setup container to build libyang, FRR and CNDP applications
+RUN dnf -y upgrade && dnf -y install git @development-tools libtool \
+  readline-devel texinfo net-snmp-devel groff pkgconfig json-c-devel \
+  pam-devel python3-pytest bison flex c-ares-devel python3-devel \
+  python3-sphinx perl-core patch libcap-devel \
+  libunwind-devel pcre2-devel \
+  elfutils-libelf-devel perf \
+  bpftool tcpdump iputils net-tools iperf bmon iproute \
+  @development-tools libbsd-devel libnl3-devel libnl3-cli \
+  numactl-libs libbpf-devel libbpf meson ninja-build \
+  gcc-c++ libpcap golang clang llvm m4 cmake \
+  pcre2 pcre2-devel dh-autoreconf python3 bpftool \
+  libpcap libpcap-devel libxdp-devel libxdp
+
+# COPY and build the UDP traffic filtering program.
+WORKDIR /
+COPY containerization/filter-udp-to-af_xdp /filter-udp-to-af_xdp
+WORKDIR /filter-udp-to-af_xdp
+RUN make -j
+
+# Clone and build CNDP
+WORKDIR /
+COPY containerization/run_cnet.sh /
+RUN chmod +x run_cnet.sh
+RUN git clone https://github.com/CloudNativeDataPlane/cndp.git
+WORKDIR /cndp
+RUN git checkout db29ec8134bcbfedecee8d4c9066aeb0a2e94934
+COPY containerization/0001-Load-custom-bpf-program.patch /cndp
+COPY containerization/crc.diff /cndp
+RUN git apply 0001-Load-custom-bpf-program.patch
+RUN git apply crc.diff
+RUN make clean
+RUN make -j
+COPY containerization/cnetfwd-graph.jsonc /cndp/builddir/examples/cnet-graph
+COPY containerization/txgen.jsonc /cndp/builddir/usrtools/txgen/app/
+WORKDIR /cndp/builddir/examples/cnet-graph
+
+
+# Copy filtering program to cnet-graph
+RUN ls /filter-udp-to-af_xdp
+RUN cp /filter-udp-to-af_xdp/xdp_filter_udp_prog_kern.o /cndp/builddir/examples/cnet-graph/
+
+WORKDIR /
