@@ -11,11 +11,11 @@ RUN dnf -y upgrade && dnf -y install git @development-tools libtool \
   libunwind-devel pcre2-devel \
   elfutils-libelf-devel perf \
   bpftool tcpdump iputils net-tools iperf bmon iproute \
-  @development-tools libbsd-devel libnl3-devel libnl3-cli \
-  numactl-libs libbpf-devel libbpf meson ninja-build \
+  libbsd-devel libnl3-devel libnl3-cli ninja-build \
+  numactl-libs libbpf-devel libbpf meson \
   gcc-c++ libpcap golang clang llvm m4 cmake \
   pcre2 pcre2-devel dh-autoreconf python3 bpftool \
-  libpcap libpcap-devel libxdp-devel libxdp
+  libpcap libpcap-devel libxdp-devel libxdp glibc-devel.i686
 
 # COPY and build the UDP traffic filtering program.
 WORKDIR /
