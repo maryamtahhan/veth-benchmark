@@ -104,9 +104,8 @@ Configure the txgen app by inputting the following at the `TXGen:/>` prompt:
 
 ```bash
 set 0 dst mac 3a:22:35:f4:7c:f5
-set 0 dst ip 192.168.100.20
-set 0 src ip 192.168.200.10/32
-set 0 size 512
+
+
 ```
 
 > **_NOTE:_** Modify the MAC addresses as appropriate. Set the DST mac to veth8 mac address
@@ -178,6 +177,25 @@ CNDP-cli:/> gstats 5
 |gtpu_input        |              0|              0|       1|     0.0|       0.0|         0.0|
 +------------------+---------------+---------------+--------+--------+----------+------------+
 ```
+
+> **_NOTE:_** you might need to modify the lcore stanzas in the cndp jsonc files.
+
+### Debug
+
+If you are seeing the cnet stats incrementing but no throughput on the second txgen port
+you can always check the dst mac address on frames being sent out veth5 using:
+
+```cmd
+$ xdpdump -i veth5 -w - | tcpdump -r - -en
+```
+
+then adjust the `veth_setup.sh` to modify the section that redirects from veth5 to veth3:
+
+```cmd
+$ ./xdp_prog_user -d veth5 -r veth3 --src-mac 2e:c3:a4:7f:18:b9 --dest-mac <update-this-value>
+```
+
+### ip link setup for example
 
 ```cmd
 $ docker exec -ti cndp-1 ip link
