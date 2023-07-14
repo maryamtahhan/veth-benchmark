@@ -28,9 +28,21 @@ Where:
 
 ## veth benchmarking setup
 
-### Building the bpf progs and the container image
+### Install dependencies
 
-Start by [ensuring Docker is installed](https://docs.docker.com/engine/install/)
+Tested on `Ubuntu 22.04.2 LTS (Jammy Jellyfish)`
+
+```bash
+sudo apt-get install -y build-essential golang libelf-dev \
+    meson pkg-config libbsd-dev libjson-c-dev libnl-3-dev \
+    libnl-cli-3-dev libnuma-dev libpcap-dev wget llvm-dev \
+    libclang-dev clang curl git gcc-multilib llvm lld \
+    m4 linux-tools-common libbpf-dev
+```
+
+[Install docker](https://docs.docker.com/engine/install/)
+
+### Building the bpf progs and the container image
 
 Build the relevant xdp-progs, applications and container image by running
 
