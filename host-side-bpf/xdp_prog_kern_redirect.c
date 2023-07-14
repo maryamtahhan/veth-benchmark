@@ -48,7 +48,7 @@ struct {
 	__uint(type, BPF_MAP_TYPE_HASH);
 	__type(key,  unsigned char [ETH_ALEN]);
 	__type(value, unsigned char [ETH_ALEN]);
-	__uint(max_entries, 1);
+	__uint(max_entries, 64);
 	__uint(pinning, LIBBPF_PIN_BY_NAME);
 } redirect_params SEC(".maps");
 
