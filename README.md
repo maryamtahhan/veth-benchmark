@@ -39,6 +39,8 @@ Build the relevant xdp-progs, applications and container image by running
 # make
 ```
 
+> **_NOTE:_** Tool `xdp-loader` is available in `xdp-tools` package.
+
 ### Setting up the containers
 
 Setup the containers by running the `container_setup.sh` script. This will
