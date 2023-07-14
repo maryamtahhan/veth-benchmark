@@ -6,7 +6,7 @@
 #include <netinet/ether.h>
 
 // Comment out or #undef to disable debugging bpf_printk
-#define _DEBUG 1
+//#define _DEBUG 1
 //#undef _DEBUG
 
 /* Header cursor to keep track of current parsing position */
