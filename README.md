@@ -105,10 +105,16 @@ Connect to both containers in separate terminals and run the cndp applications.
 Configure the txgen app by inputting the following at the `TXGen:/>` prompt:
 
 ```bash
+# dst mac veth8
 set 0 dst mac 1a:bf:be:c1:a9:ea
 set 0 dst ip 192.168.100.20
 set 0 src ip 192.168.200.10/32
 set 0 size 512
+
+# dst mac veth4
+set 1 dst mac 1e:e4:9e:d4:07:6f
+set 1 dst ip 192.168.200.11
+set 1 src ip 192.168.100.21/32
 ```
 
 > **_NOTE:_** Modify the MAC addresses as appropriate. Set the DST mac to veth8 mac address
