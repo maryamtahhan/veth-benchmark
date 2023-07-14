@@ -1,4 +1,10 @@
 # !/bin/bash
+
+basedir=`dirname $0`
+source ${basedir}/lib/bash_functions.sh
+# sudo auto detect
+root_check_run_with_sudo "$@"
+
 HOOK=N
 
 while getopts "ns" flag; do
