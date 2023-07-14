@@ -37,7 +37,8 @@ sudo apt-get install -y build-essential golang libelf-dev \
     meson pkg-config libbsd-dev libjson-c-dev libnl-3-dev \
     libnl-cli-3-dev libnuma-dev libpcap-dev wget llvm-dev \
     libclang-dev clang curl git gcc-multilib llvm lld \
-    m4 linux-tools-common libbpf-dev
+    m4 linux-tools-common libbpf-dev linux-tools-generic \
+    linux-cloud-tools-generic
 ```
 
 [Install docker](https://docs.docker.com/engine/install/)
