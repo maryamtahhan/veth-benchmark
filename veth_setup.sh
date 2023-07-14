@@ -5,6 +5,16 @@ source ${basedir}/lib/bash_functions.sh
 # sudo auto detect
 root_check_run_with_sudo "$@"
 
+if [[ -e ${basedir}/veth_mac_addrs.conf ]]; then
+  source ${basedir}/veth_mac_addrs.conf
+fi
+
+# Assign default MAC addrs if shell variable is empty
+$(mac_veth2:=02:a7:a2:bc:51:30)
+$(mac_veth8:=3a:22:35:f4:7c:f5)
+$(mac_veth6:=2e:c3:a4:7f:18:b9)
+$(mac_veth4:=36:da:e7:35:a9:bc)
+
 HOOK=N
 
 while getopts "ns" flag; do
@@ -29,7 +39,7 @@ cd host-side-bpf/
 ./xdp_redirect_user -d veth5 -$HOOK
 ./xdp_pass_user -d veth3 -$HOOK
 # ./xdp_prog_user -d veth1 -r veth7 --src-mac (veth2) --dest-mac (veth8)
-./xdp_prog_user -d veth1 -r veth7 --src-mac 02:a7:a2:bc:51:30 --dest-mac 3a:22:35:f4:7c:f5
+./xdp_prog_user -d veth1 -r veth7 --src-mac ${mac_veth2} --dest-mac ${mac_veth8}
 # ./xdp_prog_user -d veth5 -r veth3 --src-mac (veth6) --dest-mac (veth4)
-./xdp_prog_user -d veth5 -r veth3 --src-mac 2e:c3:a4:7f:18:b9 --dest-mac 36:da:e7:35:a9:bc
+./xdp_prog_user -d veth5 -r veth3 --src-mac ${mac_veth6} --dest-mac ${mac_veth4}
 cd -
