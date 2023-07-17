@@ -5,7 +5,9 @@
 #include <bpf/bpf_endian.h>
 #include <netinet/ether.h>
 
-#define _DEBUG 0
+// Comment out or #undef to disable debugging bpf_printk
+//#define _DEBUG 1
+//#undef _DEBUG
 
 /* Header cursor to keep track of current parsing position */
 struct hdr_cursor {
@@ -48,7 +50,7 @@ struct {
 	__uint(type, BPF_MAP_TYPE_HASH);
 	__type(key,  unsigned char [ETH_ALEN]);
 	__type(value, unsigned char [ETH_ALEN]);
-	__uint(max_entries, 1);
+	__uint(max_entries, 64);
 	__uint(pinning, LIBBPF_PIN_BY_NAME);
 } redirect_params SEC(".maps");
 
