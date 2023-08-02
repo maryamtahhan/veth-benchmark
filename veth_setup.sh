@@ -10,10 +10,10 @@ if [[ -e ${basedir}/veth_mac_addrs.conf ]]; then
 fi
 
 # Assign default MAC addrs if shell variable is empty
-$(mac_veth2:=02:a7:a2:bc:51:30)
-$(mac_veth8:=3a:22:35:f4:7c:f5)
-$(mac_veth6:=2e:c3:a4:7f:18:b9)
-$(mac_veth4:=36:da:e7:35:a9:bc)
+mac_veth2=${mac_veth2:=02:a7:a2:bc:51:30}
+mac_veth8=${mac_veth8:=3a:22:35:f4:7c:f5}
+mac_veth6=${mac_veth6:=2e:c3:a4:7f:18:b9}
+mac_veth4=${mac_veth4:=36:da:e7:35:a9:bc}
 
 HOOK=N
 
