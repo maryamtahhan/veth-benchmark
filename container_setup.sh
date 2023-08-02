@@ -83,9 +83,13 @@ ip netns
 echo "creating and connecting veth interfaces"
 
 ip link add veth1 type veth peer name veth2
+mac_veth1=`ip link show veth1 | awk '/ether/ {print $2}'`
+mac_veth2=`ip link show veth2 | awk '/ether/ {print $2}'`
 ip link set veth2 netns $NETNS1
 
 ip link add veth3 type veth peer name veth4
+mac_veth3=`ip link show veth3 | awk '/ether/ {print $2}'`
+mac_veth4=`ip link show veth4 | awk '/ether/ {print $2}'`
 ip link set veth4 netns $NETNS1
 
 ip netns exec $NETNS1 ip addr add 192.168.200.10/24 dev veth2
@@ -114,9 +118,13 @@ echo 0 > /proc/sys/net/bridge/bridge-nf-call-iptables
 echo "creating and connecting veth interfaces"
 
 ip link add veth5 type veth peer name veth6
+mac_veth5=`ip link show veth5 | awk '/ether/ {print $2}'`
+mac_veth6=`ip link show veth6 | awk '/ether/ {print $2}'`
 ip link set veth6 netns $NETNS2
 
 ip link add veth7 type veth peer name veth8
+mac_veth7=`ip link show veth7 | awk '/ether/ {print $2}'`
+mac_veth8=`ip link show veth8 | awk '/ether/ {print $2}'`
 ip link set veth8 netns $NETNS2
 
 ip netns exec $NETNS2 ip addr add 192.168.100.30/24 dev veth6
@@ -131,4 +139,16 @@ ip link set veth7 up
 ip link set dev veth5 master br0
 ip link set dev veth7 master br0
 
-docker exec -ti cndp-2 arp -s 192.168.100.20 36:da:e7:35:a9:bc
+docker exec -ti cndp-2 arp -s 192.168.100.20 $mac_veth4
+
+echo "veth8 192.168.200.40 mac_address = $mac_veth8"
+echo "veth4 192.168.100.20 mac_address = $mac_veth4"
+
+export mac_veth1=$mac_veth4
+export mac_veth2=$mac_veth2
+export mac_veth3=$mac_veth3
+export mac_veth4=$mac_veth4
+export mac_veth5=$mac_veth5
+export mac_veth6=$mac_veth6
+export mac_veth7=$mac_veth7
+export mac_veth8=$mac_veth8

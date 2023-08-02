@@ -20,6 +20,7 @@ RUN dnf -y upgrade && dnf -y install git @development-tools libtool \
 # COPY and build the UDP traffic filtering program.
 WORKDIR /
 COPY containerization/filter-udp-to-af_xdp /filter-udp-to-af_xdp
+RUN ls /filter-udp-to-af_xdp
 WORKDIR /filter-udp-to-af_xdp
 RUN make -j
 
@@ -29,11 +30,9 @@ COPY containerization/run_cnet.sh /
 RUN chmod +x run_cnet.sh
 RUN git clone https://github.com/CloudNativeDataPlane/cndp.git
 WORKDIR /cndp
-RUN git checkout db29ec8134bcbfedecee8d4c9066aeb0a2e94934
+RUN git checkout 53f60b170bc320ad87c5b2f8c932e88cd2dc4370
 COPY containerization/0001-Load-custom-bpf-program.patch /cndp
-COPY containerization/crc.diff /cndp
 RUN git apply 0001-Load-custom-bpf-program.patch
-RUN git apply crc.diff
 RUN make clean
 RUN make -j
 COPY containerization/cnetfwd-graph.jsonc /cndp/builddir/examples/cnet-graph
@@ -42,7 +41,6 @@ WORKDIR /cndp/builddir/examples/cnet-graph
 
 
 # Copy filtering program to cnet-graph
-RUN ls /filter-udp-to-af_xdp
 RUN cp /filter-udp-to-af_xdp/xdp_filter_udp_prog_kern.o /cndp/builddir/examples/cnet-graph/
 
 WORKDIR /
