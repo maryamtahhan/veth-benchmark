@@ -56,7 +56,7 @@ Build the relevant xdp-progs, applications and container image by running
 
 ### Setting up the containers
 
-Setup the containers by running the `source ./container_setup.sh` script. This will
+Setup the containers by running the `./container_setup.sh` script. This will
 create the following setup:
 
 ```bash
@@ -77,6 +77,9 @@ create the following setup:
 #       +---------------------------------------------------------+
 ```
 
+The veth MAC addresses are extracted stored in `veth_mac_addrs.conf`
+which gets used by script `veth_setup.sh`.
+
 ### Setting xdp progs on the host side veths
 
 Run the `veth_setup.sh` script to:
@@ -84,7 +87,7 @@ Run the `veth_setup.sh` script to:
 - Install the xdp-redirection program on veth1 and veth5.
 - Install the xdp-pass program on veth7 and veth3.
 
-> **_NOTE:_** Modify the MAC addresses in the script as appropriate.
+> **_NOTE:_** Modify the MAC addresses in script/`veth_mac_addrs.conf as appropriate.
 
 ```cmd
 # ./veth_setup.sh -n

@@ -144,6 +144,11 @@ docker exec -ti cndp-2 arp -s 192.168.100.20 $mac_veth4
 echo "veth8 192.168.200.40 mac_address = $mac_veth8"
 echo "veth4 192.168.100.20 mac_address = $mac_veth4"
 
+FILE=veth_mac_addrs.conf
+
+echo "Created file: $FILE with MAC-addrs"
+cat <<EOF > $FILE
+# Config MAC addrs used in script veth_setup.sh
 export mac_veth1=$mac_veth4
 export mac_veth2=$mac_veth2
 export mac_veth3=$mac_veth3
@@ -152,3 +157,4 @@ export mac_veth5=$mac_veth5
 export mac_veth6=$mac_veth6
 export mac_veth7=$mac_veth7
 export mac_veth8=$mac_veth8
+EOF
